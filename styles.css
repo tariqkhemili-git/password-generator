@@ -1,0 +1,252 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1c1c1c;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.container {
+  margin: 0.625rem;
+  padding: 2rem 3rem;
+  border-radius: 1.25rem;
+  background-color: #1f2937;
+}
+
+.header {
+  margin: 0 0 -0.9375rem;
+  color: white;
+  font-family: Karla, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.header .highlight {
+  color: #4adf86;
+}
+
+.subheader {
+  margin: 1.5rem 0 1.25rem;
+  color: #d5d4d8;
+  font-size: 1rem;
+}
+
+.controls {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.length-input {
+  width: 50%;
+  padding: 0.625rem 0.9375rem;
+  margin: 1.25rem 0 0.625rem;
+  border: 0.125rem solid #2f3e53;
+  border-radius: 0.375rem;
+  background-color: #273549;
+  color: white;
+  font-size: 1rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.length-input::-webkit-outer-spin-button,
+.length-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.length-input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.length-input:focus {
+  border-color: #10b981;
+}
+
+.length-input::placeholder {
+  color: #9ca3af;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: #d5d4d8;
+  font-size: 0.875rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  accent-color: #10b981;
+}
+
+.btn-generate {
+  padding: 0.5625rem 1.0625rem 0.5625rem 0.9375rem;
+  margin: 2rem 0;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: #10b981;
+  color: white;
+  font-size: 1rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-generate:hover {
+  background-color: #059669;
+}
+
+.btn-generate:active {
+  background-color: #047857;
+}
+
+hr {
+  border: none;
+  height: 0.0625rem;
+  margin: 1.25rem 0;
+  background-color: #2f3e53;
+}
+
+.passwords {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.password-row {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.password-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem 1rem;
+  line-height: 1.5;
+  border-radius: 0.375rem;
+  background-color: #273549;
+  color: white;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+
+.password-field:hover {
+  background-color: #334155;
+}
+
+.notification-container {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 1000;
+  transform: translateY(12.5rem);
+  transition: transform 0.3s ease-in-out;
+}
+
+.notification-container.show {
+  transform: translateY(0);
+}
+
+.notification {
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #273549;
+  color: #c9c9c9;
+  font-size: 0.875rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 48rem) {
+  .container {
+    margin: 0.3125rem;
+    padding: 1.5rem;
+  }
+
+  .header {
+    font-size: 1.5rem;
+  }
+
+  .subheader {
+    font-size: 0.9rem;
+  }
+
+  .length-input {
+    width: auto;
+    max-width: 100;
+  }
+
+  .btn-generate {
+    width: auto;
+    max-width: 100%;
+    padding: 0.75rem;
+  }
+
+  .password-row {
+    flex-direction: column;
+  }
+
+  .password-field {
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .notification-container {
+    left: 50%;
+    width: 88%;
+    max-width: 18.75rem;
+    transform: translate(-50%, 12.5rem);
+  }
+
+  .notification-container.show {
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 30rem) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    font-size: 1.25rem;
+  }
+
+  .subheader {
+    font-size: 0.85rem;
+  }
+
+  .btn-generate {
+    font-size: 0.9375rem;
+    padding: 0.625rem;
+  }
+
+  .password-field {
+    padding: 0.75rem;
+    font-size: 0.8125rem;
+  }
+}

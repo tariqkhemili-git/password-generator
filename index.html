@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/password.svg" />
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="container">
+      <h1 class="header">
+        Generate a <span class="highlight">random password</span>
+      </h1>
+      <p class="subheader">Never use an insecure password again.</p>
+
+      <section class="controls">
+        <input
+          type="number"
+          class="length-input"
+          placeholder="Password Length (15 by default)"
+          id="passwordLength"
+          min="1"
+          max="128"
+        />
+
+        <label class="toggle">
+          <input type="checkbox" id="includeSymbols" checked />
+          <span>Include Symbols</span>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="includeUppercase" checked />
+          <span>Include Uppercase</span>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="includeLowercase" checked />
+          <span>Include Lowercase</span>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="includeNumbers" checked />
+          <span>Include Numbers</span>
+        </label>
+
+        <button class="btn-generate">Generate passwords</button>
+      </section>
+
+      <hr />
+
+      <section class="passwords">
+        <div class="password-row">
+          <div class="password-field" data-index="0"></div>
+          <div class="password-field" data-index="1"></div>
+        </div>
+        <div class="password-row">
+          <div class="password-field" data-index="2"></div>
+          <div class="password-field" data-index="3"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="notification-container">
+      <div class="notification">Password copied to clipboard!</div>
+    </aside>
+
+    <script src="script.js"></script>
+  </body>
+</html>
