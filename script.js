@@ -23,7 +23,8 @@ const STORAGE_KEYS = {
 const DEFAULT_LENGTH = 15;
 const MIN_LENGTH = 12;
 const MAX_LENGTH = 128;
-const NOTIFICATION_DURATION = 3000;
+
+// ========== DOM ELEMENTS ==========
 
 const elements = {
   passwordFields: document.querySelectorAll(".password-field"),
@@ -41,6 +42,40 @@ const elements = {
     memorablePassword: document.querySelector("#memorablePassword"),
   },
 };
+
+// ========== UTILITY FUNCTIONS ==========
+
+/**
+ * Generates a cryptographically secure random integer
+ * Falls back to Math.random if crypto API is unavailable
+ * @param {number} max - Maximum value (exclusive)
+ * @returns {number} Random integer between 0 and max
+ */
+const getRandomInt = (max) => {
+  try {
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    return array[0] % max;
+  } catch (error) {
+    console.warn("Crypto API unavailable, using Math.random fallback");
+    return Math.floor(Math.random() * max);
+  }
+};
+
+/**
+ * Shuffles array in place using Fisher-Yates algorithm
+ * @param {Array} array - Array to shuffle
+ * @returns {Array} Shuffled array
+ */
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = getRandomInt(i + 1);
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+// ========== STORAGE MANAGEMENT ==========
 
 const storage = {
   load: () => {
@@ -64,20 +99,13 @@ const storage = {
   },
 };
 
-const getRandomInt = (max) => {
-  const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
-  return array[0] % max;
-};
+// ========== PASSWORD GENERATION ==========
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = getRandomInt(i + 1);
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
-
+/**
+ * Generates a memorable password using random words
+ * Format: Word-Word-Word-Word##!
+ * @returns {string} Memorable password
+ */
 const generateMemorablePassword = () => {
   const wordCount = 4;
   const words = [];
@@ -95,30 +123,28 @@ const generateMemorablePassword = () => {
   return words.join("-") + number + symbol;
 };
 
-const ensurePatternRequirements = (password, characters) => {
+/**
+ * Ensures generated password contains at least one character from each selected type
+ * @param {string} password - Generated password to validate
+ * @returns {string} Password with guaranteed character type coverage
+ */
+const ensurePatternRequirements = (password) => {
   const types = [];
   const charArrays = {};
 
-  if (elements.checkboxes.uppercase.checked) {
-    types.push("uppercase");
-    charArrays.uppercase = CHAR_SETS.uppercase.split("");
-  }
-  if (elements.checkboxes.lowercase.checked) {
-    types.push("lowercase");
-    charArrays.lowercase = CHAR_SETS.lowercase.split("");
-  }
-  if (elements.checkboxes.numbers.checked) {
-    types.push("numbers");
-    charArrays.numbers = CHAR_SETS.numbers.split("");
-  }
-  if (elements.checkboxes.symbols.checked) {
-    types.push("symbols");
-    charArrays.symbols = CHAR_SETS.symbols.split("");
-  }
+  // Build arrays for checked character types
+  Object.entries(elements.checkboxes).forEach(([key, checkbox]) => {
+    if (CHAR_SETS[key] && checkbox.checked) {
+      types.push(key);
+      charArrays[key] = CHAR_SETS[key].split("");
+    }
+  });
 
   if (types.length === 0) return password;
 
   const passwordArray = password.split("");
+
+  // Ensure at least one character from each type exists
   types.forEach((type, index) => {
     const hasType = passwordArray.some((char) =>
       charArrays[type].includes(char)
@@ -133,6 +159,10 @@ const ensurePatternRequirements = (password, characters) => {
   return shuffleArray(passwordArray).join("");
 };
 
+/**
+ * Generates a secure password based on user preferences
+ * @returns {string} Generated password
+ */
 const generatePassword = () => {
   if (elements.checkboxes.memorablePassword.checked) {
     return generateMemorablePassword();
@@ -160,11 +190,16 @@ const generatePassword = () => {
     () => characters[getRandomInt(characters.length)]
   ).join("");
 
-  password = ensurePatternRequirements(password, characters);
-
-  return password;
+  return ensurePatternRequirements(password);
 };
 
+// ========== UI FUNCTIONS ==========
+
+/**
+ * Displays a notification message to the user
+ * @param {string} message - Message to display
+ * @param {string} type - Notification type: 'success', 'error', or 'info'
+ */
 const showNotification = (
   message = "Password copied to clipboard!",
   type = "success"
@@ -221,21 +256,48 @@ const showNotification = (
   });
 };
 
-const copyToClipboard = (text) => {
+/**
+ * Copies text to clipboard with fallback for older browsers
+ * @param {string} text - Text to copy
+ */
+const copyToClipboard = async (text) => {
   // Check if text exists and is not empty/whitespace only
   if (!text || text.trim() === "") return;
 
-  navigator.clipboard
-    .writeText(text)
-    .then(() => {
+  try {
+    // Try modern Clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
       showNotification("Password copied to clipboard!", "success");
-    })
-    .catch(() => {
-      showNotification("Failed to copy password", "error");
-    });
+    } else {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand("copy");
+        showNotification("Password copied to clipboard!", "success");
+      } catch (err) {
+        showNotification("Failed to copy password", "error");
+      }
+
+      document.body.removeChild(textArea);
+    }
+  } catch (error) {
+    showNotification("Failed to copy password", "error");
+  }
 };
 
-const copyAllPasswords = () => {
+/**
+ * Copies all generated passwords to clipboard
+ */
+const copyAllPasswords = async () => {
   const passwords = Array.from(elements.passwordFields)
     .map((field) => field.textContent)
     .filter((text) => text && text.trim() !== "" && !text.includes("loading"));
@@ -246,21 +308,41 @@ const copyAllPasswords = () => {
   }
 
   const allPasswords = passwords.join("\n");
-  navigator.clipboard
-    .writeText(allPasswords)
-    .then(() => {
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(allPasswords);
       showNotification(
         `${passwords.length} password${
           passwords.length > 1 ? "s" : ""
         } copied!`,
         "success"
       );
-    })
-    .catch(() => {
-      showNotification("Failed to copy passwords", "error");
-    });
+    } else {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = allPasswords;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      showNotification(
+        `${passwords.length} password${
+          passwords.length > 1 ? "s" : ""
+        } copied!`,
+        "success"
+      );
+    }
+  } catch (error) {
+    showNotification("Failed to copy passwords", "error");
+  }
 };
 
+/**
+ * Generates passwords for all password fields
+ */
 const generateAllPasswords = () => {
   elements.passwordFields.forEach((field) => {
     field.classList.add("generating");
@@ -277,6 +359,9 @@ const generateAllPasswords = () => {
   });
 };
 
+/**
+ * Toggles between dark and light theme
+ */
 const toggleTheme = () => {
   const currentTheme = document.body.getAttribute("data-theme");
   const newTheme = currentTheme === "dark" ? "light" : "dark";
@@ -290,6 +375,9 @@ const toggleTheme = () => {
   }, 600);
 };
 
+/**
+ * Handles memorable password toggle and disables/enables other options
+ */
 const handleMemorablePasswordToggle = () => {
   const isMemorableChecked = elements.checkboxes.memorablePassword.checked;
   const otherCheckboxes = Object.entries(elements.checkboxes).filter(
@@ -313,21 +401,20 @@ const handleMemorablePasswordToggle = () => {
   updateGenerateButtonState();
 };
 
+/**
+ * Updates generate button enabled/disabled state based on validation rules
+ */
 const updateGenerateButtonState = () => {
   // Check if memorable password is enabled
   if (elements.checkboxes.memorablePassword.checked) {
-    elements.generateBtn.disabled = false;
-    elements.generateBtn.style.opacity = "1";
-    elements.generateBtn.style.cursor = "pointer";
+    setButtonState(false);
     return;
   }
 
   // Check password length is within valid range
   const length = parseInt(elements.lengthInput.value);
   if (!length || length < MIN_LENGTH || length > MAX_LENGTH) {
-    elements.generateBtn.disabled = true;
-    elements.generateBtn.style.opacity = "0.5";
-    elements.generateBtn.style.cursor = "not-allowed";
+    setButtonState(true);
     return;
   }
 
@@ -339,40 +426,46 @@ const updateGenerateButtonState = () => {
     elements.checkboxes.numbers,
   ].some((checkbox) => checkbox.checked);
 
-  // Disable if no character types are selected
-  if (!characterTypesSelected) {
-    elements.generateBtn.disabled = true;
-    elements.generateBtn.style.opacity = "0.5";
-    elements.generateBtn.style.cursor = "not-allowed";
-  } else {
-    elements.generateBtn.disabled = false;
-    elements.generateBtn.style.opacity = "1";
-    elements.generateBtn.style.cursor = "pointer";
-  }
+  setButtonState(!characterTypesSelected);
 };
 
+/**
+ * Sets the generate button state
+ * @param {boolean} disabled - Whether to disable the button
+ */
+const setButtonState = (disabled) => {
+  elements.generateBtn.disabled = disabled;
+  elements.generateBtn.style.opacity = disabled ? "0.5" : "1";
+  elements.generateBtn.style.cursor = disabled ? "not-allowed" : "pointer";
+};
+
+/**
+ * Handles keyboard shortcuts for the application
+ * @param {KeyboardEvent} e - Keyboard event
+ */
 const handleKeyboardShortcuts = (e) => {
-  if (e.key === "Enter" && e.target === elements.lengthInput) {
+  // Enter key on length input or Ctrl/Cmd+Enter or Ctrl/Cmd+Space - Generate passwords
+  if (
+    (e.key === "Enter" && e.target === elements.lengthInput) ||
+    ((e.ctrlKey || e.metaKey) && (e.key === "Enter" || e.key === " "))
+  ) {
     e.preventDefault();
     generateAllPasswords();
   }
 
-  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-    e.preventDefault();
-    generateAllPasswords();
-  }
-
-  if ((e.ctrlKey || e.metaKey) && e.key === " ") {
-    e.preventDefault();
-    generateAllPasswords();
-  }
-
+  // Ctrl/Cmd+Shift+C - Copy all passwords
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "c") {
     e.preventDefault();
     copyAllPasswords();
   }
 };
 
+// ========== INITIALIZATION ==========
+
+/**
+ * Initializes the application
+ * Sets up event listeners and loads saved preferences
+ */
 const init = () => {
   storage.load();
   handleMemorablePasswordToggle();
@@ -414,10 +507,8 @@ const init = () => {
     handleMemorablePasswordToggle
   );
 
-  elements.lengthInput.addEventListener("input", storage.save);
-
-  // Validate password length input and update button state
   elements.lengthInput.addEventListener("input", () => {
+    storage.save();
     updateGenerateButtonState();
   });
 

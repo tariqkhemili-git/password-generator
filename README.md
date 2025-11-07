@@ -85,13 +85,15 @@ Simply open `index.html` in your browser - no build process required!
 
 ## 🛠️ Technologies
 
-- **HTML5**: Semantic markup with ARIA accessibility features
+- **HTML5**: Semantic markup with ARIA accessibility features and skip-to-content link
 - **CSS3**: Modern styling with CSS variables, rem units, flexbox, keyframe animations, and responsive media queries
-- **Vanilla JavaScript ES6+**: Clean code with modular architecture, arrow functions, and destructuring
-- **Web Crypto API**: Cryptographically secure random number generation
+- **Vanilla JavaScript ES6+**: Clean code with modular architecture, arrow functions, destructuring, and JSDoc documentation
+- **Web Crypto API**: Cryptographically secure random number generation with Math.random fallback
 - **LocalStorage API**: Client-side preference persistence
-- **Clipboard API**: Seamless copy-to-clipboard functionality
-- **Google Fonts**: Inter and Karla typefaces for modern typography
+- **Clipboard API**: Seamless copy-to-clipboard functionality with fallback for older browsers
+- **Google Fonts**: Inter typeface for modern typography
+- **Content Security Policy**: Enhanced security headers
+- **Structured Data**: Schema.org JSON-LD markup for SEO
 
 ## 📋 Usage
 
@@ -128,8 +130,7 @@ All styling uses CSS custom properties (variables) located in `styles.css`:
 
 ### Typography
 
-- **Headers**: Karla font family
-- **Body/UI**: Inter font family
+- **All Text**: Inter font family (400, 500, 600, 700 weights)
 - **Sizing**: Rem-based units (1rem = 16px)
 
 ## 📱 Responsive Breakpoints
@@ -161,9 +162,17 @@ All styling uses CSS custom properties (variables) located in `styles.css`:
 
 ## 🔒 Security Note
 
-Passwords are generated client-side using the Web Crypto API (`crypto.getRandomValues()`), providing cryptographically secure randomness suitable for password generation. All processing happens in your browser - no data is sent to any server.
+Passwords are generated client-side using the Web Crypto API (`crypto.getRandomValues()`), providing cryptographically secure randomness suitable for password generation. If the Crypto API is unavailable, the application falls back to `Math.random()` with a warning. All processing happens in your browser - no data is sent to any server.
 
 **Pattern Requirement Feature**: The generator ensures that if you select multiple character types (e.g., uppercase + numbers + symbols), the generated password will contain at least one character from each selected type, preventing weak passwords like "aaaaaaa1" when symbols are enabled.
+
+**Security Features**:
+
+- Content Security Policy (CSP) headers
+- Minimum 12-character password enforcement
+- Cryptographically secure randomness
+- No external dependencies or CDNs (fonts loaded from Google Fonts only)
+- Clipboard fallback for maximum browser compatibility
 
 ## 📁 File Structure
 
@@ -171,11 +180,15 @@ Passwords are generated client-side using the Web Crypto API (`crypto.getRandomV
 password-generator/
 ├── index.html          # Main HTML structure
 ├── styles.css          # All styling and animations
-├── script.js           # Core password generation logic
+├── script.js           # Core password generation logic (with JSDoc)
 ├── words.js            # 508-word dictionary for memorable passwords
 ├── README.md           # This file
+├── TESTING.md          # Comprehensive testing checklist
+├── robots.txt          # Search engine directives
+├── .gitattributes      # Git line ending configuration
 └── assets/
-    └── password.svg    # Favicon
+    ├── password.svg    # Favicon
+    └── tick.svg        # Custom checkbox tick icon
 ```
 
 ## 📄 Licence
@@ -188,7 +201,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## 🙏 Acknowledgments
 
-- Font families: [Google Fonts](https://fonts.google.com/) (Inter & Karla)
+- Font family: [Google Fonts](https://fonts.google.com/) (Inter)
 - Icons: Feather Icons (embedded SVG)
 - Inspiration: Modern UI/UX best practices
 
