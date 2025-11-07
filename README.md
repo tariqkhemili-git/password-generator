@@ -66,6 +66,7 @@ A sleek, modern password generator that creates secure, cryptographically-random
 
 - **ARIA Labels**: Comprehensive screen reader support
 - **Keyboard Navigation**: Full keyboard accessibility with tab order
+- **Skip to Content Link**: Allows keyboard users to bypass navigation
 - **Focus Indicators**: Clear visual focus states
 - **Semantic HTML**: Proper HTML5 structure
 - **Role Attributes**: Proper ARIA roles for interactive elements
