@@ -301,6 +301,37 @@ const handleMemorablePasswordToggle = () => {
 
   elements.lengthInput.disabled = isMemorableChecked;
   elements.lengthInput.style.opacity = isMemorableChecked ? "0.5" : "1";
+
+  updateGenerateButtonState();
+};
+
+const updateGenerateButtonState = () => {
+  // Check if memorable password is enabled
+  if (elements.checkboxes.memorablePassword.checked) {
+    elements.generateBtn.disabled = false;
+    elements.generateBtn.style.opacity = "1";
+    elements.generateBtn.style.cursor = "pointer";
+    return;
+  }
+
+  // Check if at least one character type is selected
+  const characterTypesSelected = [
+    elements.checkboxes.symbols,
+    elements.checkboxes.uppercase,
+    elements.checkboxes.lowercase,
+    elements.checkboxes.numbers,
+  ].some((checkbox) => checkbox.checked);
+
+  // Disable if no character types are selected
+  if (!characterTypesSelected) {
+    elements.generateBtn.disabled = true;
+    elements.generateBtn.style.opacity = "0.5";
+    elements.generateBtn.style.cursor = "not-allowed";
+  } else {
+    elements.generateBtn.disabled = false;
+    elements.generateBtn.style.opacity = "1";
+    elements.generateBtn.style.cursor = "pointer";
+  }
 };
 
 const handleKeyboardShortcuts = (e) => {
@@ -328,6 +359,7 @@ const handleKeyboardShortcuts = (e) => {
 const init = () => {
   storage.load();
   handleMemorablePasswordToggle();
+  updateGenerateButtonState();
 
   elements.generateBtn.addEventListener("click", generateAllPasswords);
   elements.copyAllBtn.addEventListener("click", copyAllPasswords);
@@ -354,7 +386,10 @@ const init = () => {
   });
 
   Object.values(elements.checkboxes).forEach((checkbox) => {
-    checkbox.addEventListener("change", storage.save);
+    checkbox.addEventListener("change", () => {
+      storage.save();
+      updateGenerateButtonState();
+    });
   });
 
   elements.checkboxes.memorablePassword.addEventListener(
