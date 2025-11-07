@@ -28,12 +28,12 @@ body[data-theme="light"] {
   --text-primary: #111827;
   --text-secondary: #374151;
   --text-muted: #6b7280;
-  --accent: #10b981;
-  --accent-hover: #059669;
-  --accent-active: #047857;
+  --accent: #059669;
+  --accent-hover: #047857;
+  --accent-active: #065f46;
   --border: #d1d5db;
   --shadow: rgba(0, 0, 0, 0.1);
-  --highlight: #059669;
+  --highlight: #047857;
 }
 
 body {
