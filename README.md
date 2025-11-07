@@ -37,6 +37,7 @@ A sleek, modern password generator that creates secure, cryptographically-random
 
 - **Enter** (on length input): Generate passwords
 - **Ctrl/Cmd + Enter**: Generate passwords (anywhere)
+- **Ctrl/Cmd + Space**: Generate passwords (anywhere)
 - **Ctrl/Cmd + Shift + C**: Copy all passwords
 - **Enter/Space** (on password field): Copy that password
 

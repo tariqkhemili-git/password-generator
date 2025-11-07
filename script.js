@@ -314,6 +314,11 @@ const handleKeyboardShortcuts = (e) => {
     generateAllPasswords();
   }
 
+  if ((e.ctrlKey || e.metaKey) && e.key === " ") {
+    e.preventDefault();
+    generateAllPasswords();
+  }
+
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "c") {
     e.preventDefault();
     copyAllPasswords();
