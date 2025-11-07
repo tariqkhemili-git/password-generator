@@ -52,6 +52,9 @@ A sleek, modern password generator that creates secure, cryptographically-random
 ### 📱 Responsive Design
 
 - **Fully Optimized**: Perfect display on mobile, tablet, and desktop
+- **Horizontal Breakpoints**: Adaptive layout at 768px and 480px widths
+- **Vertical Breakpoints**: Optimized for different screen heights (800px, 640px, 560px)
+- **Landscape Support**: Special optimizations for landscape mobile devices
 - **Adaptive Layout**: Stacks on mobile, side-by-side on desktop
 - **Touch-Friendly**: Large tap targets for mobile users
 - **Modern Aesthetics**: Clean design with smooth animations
@@ -75,14 +78,17 @@ A sleek, modern password generator that creates secure, cryptographically-random
 
 Simply open `index.html` in your browser - no build process required!
 
+**Note**: The project uses separate JavaScript files (`words.js` and `script.js`) loaded as standard scripts. If you're hosting on a web server, all files will work seamlessly. Opening directly via `file://` protocol works perfectly since we're not using ES6 modules.
+
 ## 🛠️ Technologies
 
 - **HTML5**: Semantic markup with ARIA accessibility features
-- **CSS3**: Modern styling with CSS variables, rem units, flexbox, and responsive media queries
+- **CSS3**: Modern styling with CSS variables, rem units, flexbox, keyframe animations, and responsive media queries
 - **Vanilla JavaScript ES6+**: Clean code with modular architecture, arrow functions, and destructuring
 - **Web Crypto API**: Cryptographically secure random number generation
 - **LocalStorage API**: Client-side preference persistence
 - **Clipboard API**: Seamless copy-to-clipboard functionality
+- **Google Fonts**: Inter and Karla typefaces for modern typography
 
 ## 📋 Usage
 
@@ -110,7 +116,7 @@ All styling uses CSS custom properties (variables) located in `styles.css`:
 --text-primary: #ffffff;
 
 /* Light Theme */
---bg-primary: #1c1c1c;
+--bg-primary: #f3f4f6;
 --bg-secondary: #ecfdf5;
 --bg-tertiary: #e5e7eb;
 --accent: #10b981;
@@ -125,20 +131,49 @@ All styling uses CSS custom properties (variables) located in `styles.css`:
 
 ## 📱 Responsive Breakpoints
 
+### Width Breakpoints
+
 - **Desktop**: Default layout (>768px)
 - **Tablet**: Optimized layout (481px - 768px)
 - **Mobile**: Stacked layout (≤480px)
 
+### Height Breakpoints
+
+- **Standard**: Default spacing (>800px)
+- **Medium**: Compact spacing (≤800px)
+- **Short**: Tight spacing (≤640px)
+- **Very Short**: Minimal spacing (≤560px)
+
+### Combined
+
+- **Landscape Mobile**: Optimized for short height + narrow width (≤560px height & ≤768px width)
+
 ## 🎭 Animations
 
-- **Theme Toggle**: Rotating icon transition with pulse effect
-- **Notifications**: Slide-in with bounce, checkmark pop, progress bar
-- **Password Fields**: Fade-in on generation, hover/active states
-- **Buttons**: Scale transforms, loading spinners
+- **Theme Toggle**: Rotating icon transition with pulse effect and smooth opacity fade
+- **Notifications**: Slide-in with bounce, checkmark pop, animated progress bar, slide-out dismiss
+- **Password Fields**: Fade-in on generation, hover/active states, loading spinners
+- **Buttons**: Scale transforms on interaction, continuous loading spinners
+- **Icons**: Rotate and scale effects on theme switching
 
 ## 🔒 Security Note
 
 Passwords are generated client-side using the Web Crypto API (`crypto.getRandomValues()`), providing cryptographically secure randomness suitable for password generation. All processing happens in your browser - no data is sent to any server.
+
+**Pattern Requirement Feature**: The generator ensures that if you select multiple character types (e.g., uppercase + numbers + symbols), the generated password will contain at least one character from each selected type, preventing weak passwords like "aaaaaaa1" when symbols are enabled.
+
+## 📁 File Structure
+
+```
+password-generator/
+├── index.html          # Main HTML structure
+├── styles.css          # All styling and animations
+├── script.js           # Core password generation logic
+├── words.js            # 508-word dictionary for memorable passwords
+├── README.md           # This file
+└── assets/
+    └── password.svg    # Favicon
+```
 
 ## 📄 License
 
