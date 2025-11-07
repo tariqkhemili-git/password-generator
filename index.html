@@ -3,8 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO & Social Media Meta Tags -->
+    <meta
+      name="description"
+      content="Generate secure passwords with customizable length and character types. Features localStorage persistence, responsive design, and one-click copy functionality."
+    />
+    <meta
+      name="keywords"
+      content="password generator, secure password, random password, password strength"
+    />
+    <meta name="author" content="tariqkhemili-git" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://github.com/tariqkhemili-git/password-generator"
+    />
+    <meta
+      property="og:title"
+      content="Password Generator - Secure & Customizable"
+    />
+    <meta
+      property="og:description"
+      content="Generate secure passwords with customizable options. Features include localStorage support, responsive design, and crypto-strength randomness."
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/tariqkhemili-git/password-generator/main/assets/password.svg"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://github.com/tariqkhemili-git/password-generator"
+    />
+    <meta
+      property="twitter:title"
+      content="Password Generator - Secure & Customizable"
+    />
+    <meta
+      property="twitter:description"
+      content="Generate secure passwords with customizable options. Features include localStorage support, responsive design, and crypto-strength randomness."
+    />
+    <meta
+      property="twitter:image"
+      content="https://raw.githubusercontent.com/tariqkhemili-git/password-generator/main/assets/password.svg"
+    />
+
     <link rel="icon" type="image/png" href="assets/password.svg" />
-    <title>Password Generator</title>
+    <title>Password Generator - Secure & Customizable</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,13 +64,59 @@
     />
   </head>
   <body>
+    <button
+      class="theme-toggle"
+      aria-label="Toggle dark/light mode"
+      title="Toggle theme"
+    >
+      <svg
+        class="sun-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <svg
+        class="moon-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+
     <main class="container">
       <h1 class="header">
-        Generate a <span class="highlight">random password</span>
+        Generate a <span class="highlight">secure password</span>
       </h1>
       <p class="subheader">Never use an insecure password again.</p>
 
       <section class="controls">
+        <label for="passwordLength" class="visually-hidden"
+          >Password Length</label
+        >
         <input
           type="number"
           class="length-input"
@@ -28,49 +124,186 @@
           id="passwordLength"
           min="1"
           max="128"
+          value="15"
+          aria-label="Password length (1 to 128 characters)"
         />
 
         <label class="toggle">
-          <input type="checkbox" id="includeSymbols" checked />
+          <input
+            type="checkbox"
+            id="includeSymbols"
+            checked
+            aria-label="Include symbols in password"
+          />
           <span>Include Symbols</span>
         </label>
 
         <label class="toggle">
-          <input type="checkbox" id="includeUppercase" checked />
+          <input
+            type="checkbox"
+            id="includeUppercase"
+            checked
+            aria-label="Include uppercase letters in password"
+          />
           <span>Include Uppercase</span>
         </label>
 
         <label class="toggle">
-          <input type="checkbox" id="includeLowercase" checked />
+          <input
+            type="checkbox"
+            id="includeLowercase"
+            checked
+            aria-label="Include lowercase letters in password"
+          />
           <span>Include Lowercase</span>
         </label>
 
         <label class="toggle">
-          <input type="checkbox" id="includeNumbers" checked />
+          <input
+            type="checkbox"
+            id="includeNumbers"
+            checked
+            aria-label="Include numbers in password"
+          />
           <span>Include Numbers</span>
         </label>
 
-        <button class="btn-generate">Generate passwords</button>
+        <label class="toggle">
+          <input
+            type="checkbox"
+            id="excludeSimilar"
+            aria-label="Exclude similar characters like 0/O and 1/l"
+          />
+          <span>Exclude Similar Characters (0/O, 1/l/I)</span>
+        </label>
+
+        <label class="toggle memorable-toggle">
+          <input
+            type="checkbox"
+            id="memorablePassword"
+            aria-label="Generate memorable password"
+          />
+          <span>Memorable Password (word-based)</span>
+        </label>
+
+        <div class="button-group">
+          <button class="btn-generate" aria-label="Generate new passwords">
+            <span>Generate passwords</span>
+          </button>
+          <button class="btn-copy-all" aria-label="Copy all passwords">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path
+                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              ></path>
+            </svg>
+            <span>Copy All</span>
+          </button>
+        </div>
       </section>
 
       <hr />
 
-      <section class="passwords">
+      <section class="passwords" role="region" aria-label="Generated passwords">
         <div class="password-row">
-          <div class="password-field" data-index="0"></div>
-          <div class="password-field" data-index="1"></div>
+          <div
+            class="password-field"
+            data-index="0"
+            tabindex="0"
+            role="button"
+            aria-label="Password 1, click to copy"
+          >
+            <span class="password-loading"></span>
+          </div>
+          <div
+            class="password-field"
+            data-index="1"
+            tabindex="0"
+            role="button"
+            aria-label="Password 2, click to copy"
+          >
+            <span class="password-loading"></span>
+          </div>
         </div>
         <div class="password-row">
-          <div class="password-field" data-index="2"></div>
-          <div class="password-field" data-index="3"></div>
+          <div
+            class="password-field"
+            data-index="2"
+            tabindex="0"
+            role="button"
+            aria-label="Password 3, click to copy"
+          >
+            <span class="password-loading"></span>
+          </div>
+          <div
+            class="password-field"
+            data-index="3"
+            tabindex="0"
+            role="button"
+            aria-label="Password 4, click to copy"
+          >
+            <span class="password-loading"></span>
+          </div>
         </div>
       </section>
     </main>
 
-    <aside class="notification-container">
-      <div class="notification">Password copied to clipboard!</div>
+    <aside
+      class="notification-container"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div class="notification">
+        <svg
+          class="notification-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span class="notification-text">Password copied to clipboard!</span>
+        <button
+          class="notification-close"
+          aria-label="Close notification"
+          tabindex="0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
     </aside>
 
+    <script src="words.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
