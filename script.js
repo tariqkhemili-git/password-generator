@@ -21,6 +21,8 @@ const STORAGE_KEYS = {
 };
 
 const DEFAULT_LENGTH = 15;
+const MIN_LENGTH = 12;
+const MAX_LENGTH = 128;
 const NOTIFICATION_DURATION = 3000;
 
 const elements = {
@@ -297,10 +299,16 @@ const handleMemorablePasswordToggle = () => {
   otherCheckboxes.forEach(([_, checkbox]) => {
     checkbox.disabled = isMemorableChecked;
     checkbox.parentElement.style.opacity = isMemorableChecked ? "0.5" : "1";
+    checkbox.parentElement.style.cursor = isMemorableChecked
+      ? "not-allowed"
+      : "pointer";
   });
 
   elements.lengthInput.disabled = isMemorableChecked;
   elements.lengthInput.style.opacity = isMemorableChecked ? "0.5" : "1";
+  elements.lengthInput.style.cursor = isMemorableChecked
+    ? "not-allowed"
+    : "text";
 
   updateGenerateButtonState();
 };
@@ -311,6 +319,15 @@ const updateGenerateButtonState = () => {
     elements.generateBtn.disabled = false;
     elements.generateBtn.style.opacity = "1";
     elements.generateBtn.style.cursor = "pointer";
+    return;
+  }
+
+  // Check password length is within valid range
+  const length = parseInt(elements.lengthInput.value);
+  if (!length || length < MIN_LENGTH || length > MAX_LENGTH) {
+    elements.generateBtn.disabled = true;
+    elements.generateBtn.style.opacity = "0.5";
+    elements.generateBtn.style.cursor = "not-allowed";
     return;
   }
 
@@ -398,6 +415,11 @@ const init = () => {
   );
 
   elements.lengthInput.addEventListener("input", storage.save);
+
+  // Validate password length input and update button state
+  elements.lengthInput.addEventListener("input", () => {
+    updateGenerateButtonState();
+  });
 
   document.addEventListener("keydown", handleKeyboardShortcuts);
 };

@@ -1,12 +1,12 @@
 # 🔐 Password Generator
 
-A sleek, modern password generator that creates secure, cryptographically-random passwords with extensive customization options. Built with vanilla JavaScript, HTML, and CSS - no frameworks or dependencies required.
+A sleek, modern password generator that creates secure, cryptographically-random passwords with extensive customisation options. Built with vanilla JavaScript, HTML, and CSS - no frameworks or dependencies required.
 
 ## ✨ Features
 
 ### 🎯 Core Features
 
-- **Customizable Length**: Generate passwords from 1 to 128 characters
+- **Customisable Length**: Generate passwords from 12 to 128 characters (minimum 12 for security)
 - **Character Type Options**: Toggle symbols, uppercase, lowercase, and numbers independently
 - **Multiple Passwords**: Generate 4 unique passwords simultaneously
 - **One-Click Copy**: Click any password field to copy to clipboard instantly
@@ -16,16 +16,18 @@ A sleek, modern password generator that creates secure, cryptographically-random
 ### 🔒 Security Features
 
 - **Cryptographically Secure**: Uses `crypto.getRandomValues()` for true randomness
+- **Minimum Length Enforcement**: 12-character minimum ensures strong passwords
 - **Pattern Requirements**: Ensures at least one character from each selected type
 - **Exclude Similar Characters**: Optional filter for confusing characters (0/O, 1/l/I)
 - **Memorable Passwords**: Generate word-based passwords for better recall (e.g., `Crystal-Phoenix-Mountain-Sunset42!`)
 - **508 Word Dictionary**: Extensive word list for memorable password variety
+- **Smart Generation Blocking**: Prevents generation with invalid configurations (out-of-range length or no character types selected)
 
 ### 🎨 User Experience
 
 - **Dark/Light Theme Toggle**: Smooth animated theme switching with persistence
 - **Enhanced Notifications**:
-  - Success/error/info message types with color-coded icons
+  - Success/error/info message types with colour-coded icons
   - Animated progress bar showing auto-dismiss countdown
   - Manual close button with keyboard support
   - Smooth slide-in/out animations
@@ -52,10 +54,10 @@ A sleek, modern password generator that creates secure, cryptographically-random
 
 ### 📱 Responsive Design
 
-- **Fully Optimized**: Perfect display on mobile, tablet, and desktop
+- **Fully Optimised**: Perfect display on mobile, tablet, and desktop
 - **Horizontal Breakpoints**: Adaptive layout at 768px and 480px widths
-- **Vertical Breakpoints**: Optimized for different screen heights (800px, 640px, 560px)
-- **Landscape Support**: Special optimizations for landscape mobile devices
+- **Vertical Breakpoints**: Optimised for different screen heights (800px, 640px, 560px)
+- **Landscape Support**: Special optimisations for landscape mobile devices
 - **Adaptive Layout**: Stacks on mobile, side-by-side on desktop
 - **Touch-Friendly**: Large tap targets for mobile users
 - **Modern Aesthetics**: Clean design with smooth animations
@@ -70,9 +72,9 @@ A sleek, modern password generator that creates secure, cryptographically-random
 
 ### 🔗 SEO & Sharing
 
-- **Open Graph Tags**: Optimized Facebook/LinkedIn sharing
+- **Open Graph Tags**: Optimised Facebook/LinkedIn sharing
 - **Twitter Cards**: Enhanced Twitter preview
-- **Meta Tags**: Complete SEO optimization
+- **Meta Tags**: Complete SEO optimisation
 - **Descriptive Content**: Keyword-rich descriptions
 
 ## 🚀 Demo
@@ -93,20 +95,20 @@ Simply open `index.html` in your browser - no build process required!
 
 ## 📋 Usage
 
-1. **Set Password Length**: Enter desired length (defaults to 15, max 128)
+1. **Set Password Length**: Enter desired length (defaults to 15, minimum 12, maximum 128)
 2. **Choose Character Types**: Toggle checkboxes for symbols, uppercase, lowercase, and numbers
 3. **Optional Settings**:
    - Enable "Exclude Similar Characters" to avoid confusing characters
-   - Enable "Memorable Password" for word-based passwords
-4. **Generate**: Click "Generate passwords" to create 4 unique passwords
+   - Enable "Memorable Password" for word-based passwords (disables other options)
+4. **Generate**: Click "Generate passwords" to create 4 unique passwords (button disabled if length is out of range or no character types selected)
 5. **Copy**: Click any password field to copy it, or use "Copy All" for all 4
 6. **Theme**: Toggle dark/light mode with the sun/moon icon in top-right
 
-## 🎨 Customization
+## 🎨 Customisation
 
 All styling uses CSS custom properties (variables) located in `styles.css`:
 
-### Color Scheme
+### Colour Scheme
 
 ```css
 /* Dark Theme */
@@ -135,7 +137,7 @@ All styling uses CSS custom properties (variables) located in `styles.css`:
 ### Width Breakpoints
 
 - **Desktop**: Default layout (>768px)
-- **Tablet**: Optimized layout (481px - 768px)
+- **Tablet**: Optimised layout (481px - 768px)
 - **Mobile**: Stacked layout (≤480px)
 
 ### Height Breakpoints
@@ -147,7 +149,7 @@ All styling uses CSS custom properties (variables) located in `styles.css`:
 
 ### Combined
 
-- **Landscape Mobile**: Optimized for short height + narrow width (≤560px height & ≤768px width)
+- **Landscape Mobile**: Optimised for short height + narrow width (≤560px height & ≤768px width)
 
 ## 🎭 Animations
 
@@ -176,9 +178,9 @@ password-generator/
     └── password.svg    # Favicon
 ```
 
-## 📄 License
+## 📄 Licence
 
-MIT License - feel free to use this project however you'd like!
+MIT Licence - feel free to use this project however you'd like!
 
 ## 🤝 Contributing
 
